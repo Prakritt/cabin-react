@@ -9,24 +9,13 @@ import Textarea from "../../ui/Textarea";
 import FormRow from "../../ui/FormRow";
 
 import { useForm } from "react-hook-form";
-import { createCabin } from "../../services/apiCabins";
+import { useCreateCabin } from "./useCreateCabin";
 
 function CreateCabinForm() {
   const { register, handleSubmit, reset, formState, getValues } = useForm();
+  const { isCreating, createCabin } = useCreateCabin();
   const { errors } = formState;
-  const queryClient = useQueryClient();
   console.log(errors);
-  const { mutate, isLoading: isCreating } = useMutation({
-    mutationFn: createCabin,
-    onSuccess: () => {
-      toast.success("Cabin Insertion Successful..");
-      queryClient.invalidateQueries({ queryKey: ["cabins"] });
-      reset();
-    },
-    onError: (err) => {
-      toast.err(err.message);
-    },
-  });
 
   function onError(error) {
     console.log("There was an error :", error);
